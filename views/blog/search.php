@@ -17,11 +17,12 @@ use yii\helpers\Url;
           <time><?= date("F j, Y", strtotime($post['create_time'])) ?></time>
           <div class="blog_title"><?= $post['title'] ?></div>
           <div class="clear"></div>
-          <div class="img_inner fleft"><?= Html::img("@web/images/blog/{$post['img']}") ?></div>
+          <?php $mainImg = $post->getImage() ?>
+          <div class="img_inner fleft"><?= Html::img($mainImg->getUrl('152x')) ?></div>
           <div class="extra_wrapper">
-            <div class="text1">Author: <a href="#">admin</a></div>
+            <div class="text1">Author: <a href="<?= Url::to(['/profile/view', 'id' => $post['user_id']]) ?>"><?= $post['profile']['name'].' '.$post['profile']['surname'] ?></a></div>
             <p><?= $post['short_content'] ?></p><br>
-            <a href="<?= Url::to(['blog/post', 'id' => $post['id']]) ?>" class="btn">More >></a> </div>
+            <a href="<?= Url::to(['blog/post', 'id' => $post['id']]) ?>" class="btn">Читать >></a> </div>
         </div>
         <?php endforeach; ?>
         <?php echo yii\widgets\LinkPager::widget([

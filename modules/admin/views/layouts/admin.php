@@ -28,9 +28,6 @@ ltAppAsset::register($this);
     <link rel="icon" href="/images/favicon.ico">
     <link rel="shortcut icon" href="/images/favicon.ico">
 
-    <?php //$this->registerJsFile('js/slider.js', ['position' => \yii\web\View::POS_HEAD]) ?>
-    <?php //$this->registerJsFile('js/carousel1.js', ['position' => \yii\web\View::POS_HEAD]) ?>
-
 </head>
 <body class="page1">
     <?php $this->beginBody() ?>
@@ -45,20 +42,22 @@ ltAppAsset::register($this);
   </div>
   <div class="menu_block">
     <div class="container_12">
-      <div class="grid_12">
-        <div class="socials"><a href="#"></a><a href="#"></a></div>
+      <div class="grid_12">        
         <?php if(!\Yii::$app->user->isGuest): ?>
-            <?php if(\Yii::$app->user->identity['username'] == 'admin'): ?>
-                <div class="autor"> <a href="<?= Url::to(['/admin/post/index']) ?>"><?= '(' . \Yii::$app->user->identity['username'] . ')'?></a><a href="<?= Url::to(['/site/logout']) ?>">Выход</a> Social </div>
+            <?php if(\Yii::$app->user->identity['username'] == 'admin' && \Yii::$app->user->identity['id'] == 1): ?>
+                <div class="autor"> <a href="<?= Url::to(['/profile/view', 'id' => \Yii::$app->user->identity['id']]) ?>"><?= '(' . \Yii::$app->user->identity['username'] . ')'?></a><a href="<?= Url::to(['/site/logout']) ?>">Выход</a></div>
             <?php else: ?>
-                <div class="autor"> <?= '(' . \Yii::$app->user->identity['username'] . ') | '?><a href="<?= Url::to(['/site/logout']) ?>">Выход</a> Social </div>
+                <div class="autor"> <a href="<?= Url::to(['/profile/view', 'id' => \Yii::$app->user->identity['id']]) ?>"><?= '(' . \Yii::$app->user->identity['username'] . ')'?><a href="<?= Url::to(['/site/logout']) ?>">Выход</a></div>
             <?php endif ?>
         <?php else: ?>
-        <div class="autor"><a href="<?= Url::to(['/site/login']) ?>">Вход</a> Social </div>        
+        <div class="autor"><a href="<?= Url::to(['/site/login']) ?>">Вход</a></div>        
         <?php endif; ?>
         <nav class="">
           <ul class="sf-menu">
             <li class="current"><a href="<?= Url::home() ?>">Главная</a></li>
+            <?php if(!\Yii::$app->user->isGuest): ?>
+            <?php if(\Yii::$app->user->identity['username'] == 'admin' && \Yii::$app->user->identity['id'] == 1): ?>            
+            <li><a href="<?= Url::to(['/profile/index']) ?>">Пользователи</a>
             <li><a href="<?= Url::to(['/admin/post/index']) ?>">Статьи ˇ</a>
               <ul>
                 <li><a href="<?= Url::to('/admin/post/index') ?>">Просмотр всех</a></li>
@@ -71,6 +70,8 @@ ltAppAsset::register($this);
                 <li><a href="<?= Url::to('/admin/category/create') ?>">Создать новую</a></li>
               </ul>
             </li>
+            <?php endif; ?>
+            <?php endif; ?>
           </ul>
         </nav>
         <div class="clear"></div>
@@ -88,49 +89,7 @@ ltAppAsset::register($this);
   <div class="container_12">
     <div class="grid_2">
       <div class="copy"> <a href="index.html" class="footer_logo"><img src="/images/footer_logo.png"	alt=""></a> &copy; 2045 <a href="#">Privacy Policy</a> </div>
-    </div>
-    <div class="grid_2">
-      <ul>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Delivery</a></li>
-        <li><a href="#">Legal Notice</a></li>
-        <li><a href="#">Terms and Conditions</a></li>
-        <li><a href="#">About Us</a></li>
-      </ul>
-    </div>
-    <div class="grid_2">
-      <ul>
-        <li><a href="#">New Products</a></li>
-        <li><a href="#">Top Sellers</a></li>
-        <li><a href="#">Specials</a></li>
-        <li><a href="#">Manufacturers</a></li>
-        <li><a href="#">Suppliers</a></li>
-      </ul>
-    </div>
-    <div class="grid_2">
-      <ul>
-        <li><a href="#">Science &amp; Safety</a></li>
-        <li><a href="#">Product </a></li>
-        <li><a href="#">Our Brands</a></li>
-        <li><a href="#">Agricultural </a></li>
-        <li><a href="#">Traits &amp; Technologies</a></li>
-      </ul>
-    </div>
-    <div class="grid_3 prefix_1">
-      <h4>Newsletter</h4>
-      <form id="newsletter" action="#">
-        <div class="success">Your subscribe request has been sent!</div>
-        <label class="email"> <span>Enter e-mail address</span>
-          <input type="email" value="" >
-          <a href="#" class="btn" data-type="submit">Subscribe</a> <span class="error">*This is not a valid email address.</span> </label>
-      </form>
-    </div>
-    <div class="clear"></div>
-  </div>
-  <div class="f_bot">
-    <div class="container_12">
-      <div class="grid_12">Design by: <a href="http://www.templatemonster.com/">TemplateMonster.com</a></div>
-    </div>
+    </div>   
   </div>
 </footer>
 <?php $this->endBody() ?>

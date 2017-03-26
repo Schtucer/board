@@ -19,6 +19,7 @@ class Post extends \yii\db\ActiveRecord
 {
     public $image;
     public $gallery;
+    
     /**
      * @inheritdoc
      */
@@ -42,11 +43,11 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'title', 'short_content', 'content', 'tags',], 'required'],
-            [['category_id', 'status'], 'integer'],
+            [['category_id', 'title', 'short_content', 'content', 'tags'], 'required'],
+            [['category_id', 'user_id', 'status'], 'integer'],
             [['short_content', 'content'], 'string'],
             [['create_time'], 'safe'],
-            [['title', 'tags', 'img'], 'string', 'max' => 255],
+            [['title', 'tags'], 'string', 'max' => 255],
             [['image'], 'file', 'extensions' => 'png, jpg'],
             [['gallery'], 'file', 'extensions' => 'png, jpg', 'maxFiles' => 5],
         ];
@@ -59,7 +60,8 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category_id' => 'ID категории',
+            'category_id' => 'Выбор категории',
+            'user_id' => 'ID пользователя',
             'title' => 'Заглавие',
             'short_content' => 'Превью',
             'content' => 'Контент',

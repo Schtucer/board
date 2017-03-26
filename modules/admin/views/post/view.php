@@ -21,13 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php endif; ?>
     
-    <?php if (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <?php echo Yii::$app->session->getFlash('error') ?>
-        </div>
-    <?php endif; ?>
-
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -39,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
     
-    <?php //$img = $model->getImage(); debug($img) ?>
+    <?php $img = $model->getImage() ?>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -52,9 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             'create_time',
             'tags',
+            'user_id',
             [
                 'attribute' => 'image',
-                'value' => "<src img='{$img->getUrl()}'>",
+                'value' => "<img src='{$img->getUrl()}'>",
                 'format' => 'html',
             ]
         ],

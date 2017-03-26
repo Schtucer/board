@@ -73,12 +73,19 @@ class PostController extends AppAdminController
     public function actionCreate()
     {
         $model = new Post();
+        $model->user_id = Yii::$app->user->identity['id'];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if ($model->image) {
+                $model->upload();
+            }
+            unset($model->image);
+            $model->gallery = UploadedFile::getInstances($model, 'gallery');
+            $model->uploadGallery();
             Yii::$app->session->setFlash('success', "Статья \"{$model->title}\" успешно создана");
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            Yii::$app->session->setFlash('error', "Ошибка при создании статьи \"{$model->title}\"");
+        } else {            
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -100,12 +107,12 @@ class PostController extends AppAdminController
             if ($model->image) {
                 $model->upload();
             }
+            unset($model->image);
             $model->gallery = UploadedFile::getInstances($model, 'gallery');
             $model->uploadGallery();
             Yii::$app->session->setFlash('success', "Статья \"{$model->title}\" успешно обновлена");
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            Yii::$app->session->setFlash('error', "Ошибка при обновлении статьи \"{$model->title}\"");
+        } else {            
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -137,7 +144,7 @@ class PostController extends AppAdminController
         if (($model = Post::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Запрошенная страница не существует.');
         }
     }
 }

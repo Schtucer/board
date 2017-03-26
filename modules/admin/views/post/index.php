@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Posts';
+$this->title = 'Здесь объявления всех пользователей';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="white wt2">
@@ -30,7 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'status',
             // 'create_time',
             'tags',
-            'img',
+            'user_id',
+            'image',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

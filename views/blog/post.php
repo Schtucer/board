@@ -6,64 +6,56 @@ use yii\widgets\Pjax;
 ?>
 <div class="content">
   <div class="white wt2">
-    <div class="container_12">
-      <div class="grid_12">
-        <h3>Blog</h3>
-      </div>        
+      <div class="container_12"></br></br></br>                
       <div class="grid_8">        
         <div class="blog">
           <time><?= date("F j, Y", strtotime($post['create_time'])) ?></time>
           <div class="blog_title"><?= $post['title'] ?></div>
           <div class="clear"></div>
-          <div class="img_inner fleft"><?= Html::img("@web/images/blog/{$post['img']}") ?></div>
+          <?php $mainImg = $post->getImage() ?>
+          <div class="img_inner fleft"><?= Html::img($mainImg->getUrl()) ?></div>
           <div class="extra_wrapper">
-            <div class="text1">Author: <a href="#">admin</a></div>
+            <div class="text1">Author: <a href="<?= Url::to(['/profile/view', 'id' => $post['user_id']]) ?>"><?= $post['profile']['name'].' '.$post['profile']['surname'] ?></a></div>
             <p><?= $post['content'] ?></p><br>
-            <a href="<?= Url::to(['blog/']) ?>" class="btn"><< Back</a> </div>
+            <a href="<?= Url::to(['blog/']) ?>" class="btn"><< Назад</a> </div>
         </div>
-        <?php
-            Pjax::begin([
-                // Pjax options
-            ]);
-        ?>
-        <?php $lastId = \Yii::$app->db->getLastInsertID() ?>
-        <?php Pjax::end(); ?>
           
-        <?php
-            Pjax::begin([
-                // Pjax options
-            ]);
+        <?php 
+            Pjax::begin([]); 
+                $lastId = \Yii::$app->db->getLastInsertID(); 
+            Pjax::end();
         ?>
+          
+        <?php Pjax::begin([]); ?>
           <div align="center"><h5>Комментарии (<?php if(isset($_POST['comment-button'])) {
                 echo (count($comments)+1);
             }else{
                 echo count($comments);
             }
-          ?>):</h5></div>
+          ?>):</h5></div>    
     
-    <?php $item = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']; ?>
-    <?php foreach($comments as $$item[0]): ?>
-            <?php if(${$item[0]}['parent_id'] == 0 && ${$item[0]}['level'] == 0): ?>
+    <?php foreach($comments as $a): ?>
+            <?php if($a['parent_id'] == 0 && $a['level'] == 0): ?>
                 <div class="grid_8">
                 <img src="/images/no-image.jpg" alt="" class="img_inner fleft i1">
                     <div class="extra_wrapper">
-                        <h1><b><?= ${$item[0]}['author'] ?></b> <i>говорит:</i></h1>
-                        <div class="col1"><u><?= ${$item[0]}['created_at'] ?></u></div></br>
-                        <?= ${$item[0]}['content'] ?></div>
+                        <h1><b><?= $a['author'] ?></b> <i>говорит:</i></h1>
+                        <div class="col1"><u><?= $a['created_at'] ?></u></div></br>
+                        <?= $a['content'] ?></div>
                 <?php $form = ActiveForm::begin([
                     'options' => ['data' => ['pjax' => true]],
                 ]); ?>
                 <div class="form-group">
                     <div class="col-lg-offset-1 col-lg-11" align="left">
-                        <?= Html::submitButton('Ответить', ['class' => 'btn btn-xs', 'name' => "answer-button-{${$item[0]}['id']}"]); ?>
+                        <?= Html::submitButton('Ответить', ['class' => 'btn btn-xs', 'name' => "answer-button-{$a['id']}"]); ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>
                     <div class="clear cl4"></div>                    
                 </div>
-                <?php if (isset($_POST["answer-button-{${$item[0]}['id']}"])): ?>        
+                <?php if (isset($_POST["answer-button-{$a['id']}"])): ?>        
                 
-                <div align="center"><h5>Ответить пользователю <?= ${$item[0]}['author'] ?>:</h5></div>        
+                <div align="center"><h5>Ответить пользователю <?= $a['author'] ?>:</h5></div>        
                       <?php
                       $form = ActiveForm::begin([
                           'id' => 'comment-form',
@@ -75,12 +67,8 @@ use yii\widgets\Pjax;
                           ],
                       ]);
                       ?>
-                      <?php //if(isset($_POST['comment-button'])): //перенёс в контроллер?> 
-                      <?php //$comment->author = '' ?>
-                      <?php //$comment->content = '' ?>
-                      <?php //endif; ?>
-
-                      <?php $comment->parent_id = ${$item[0]}['id'] ?>
+                
+                      <?php $comment->parent_id = $a['id'] ?>
                       <?php $comment->level = 1 ?>
 
                       <?= $form->field($comment, 'author')->textInput() ?>
@@ -91,7 +79,6 @@ use yii\widgets\Pjax;
                           <div class="col-lg-offset-1 col-lg-11" align="center">
                               <?= Html::submitButton('Отправить', ['class' => 'btn btn-warning', 'name' => 'comment-button']) ?>
                               <a href="<?= Url::to(['blog/post', 'id' => $post['id']]) ?>" class="btn">Отменить</a>
-                              <?php //echo Html::Button('Отменить', ['class' => 'btn btn-default', 'name' => 'cancel-button']) ?>
                           </div>
                       </div>
 
@@ -109,30 +96,30 @@ use yii\widgets\Pjax;
                       <?php ActiveForm::end(); ?>
                   <?php endif; ?>        
         
-            <?php foreach($comments as $$item[1]): ?>
-                <?php if(${$item[1]}['parent_id'] == ${$item[0]}['id'] && ${$item[1]}['level'] == 1): ?>
+            <?php foreach($comments as $b): ?>
+                <?php if($b['parent_id'] == $a['id'] && $b['level'] == 1): ?>
                     <div class="grid_8"><div class="grid_8"><div class="grid_8">
                     <div class="grid_8"><div class="grid_8"><div class="grid_8">
                     <img src="/images/no-image.jpg" alt="" class="img_inner fleft i1">
                         <div class="extra_wrapper">
-                            <h1><b><?= ${$item[1]}['author'] ?></b> <i>отвечает:</i></h1>
-                            <div class="col1"><u><?= ${$item[1]}['created_at'] ?></u></div></br>
-                            <?= ${$item[1]}['content'] ?></div>
+                            <h1><b><?= $b['author'] ?></b> <i>отвечает:</i></h1>
+                            <div class="col1"><u><?= $b['created_at'] ?></u></div></br>
+                            <?= $b['content'] ?></div>
                     <?php $form = ActiveForm::begin([
                         'options' => ['data' => ['pjax' => true]],
                     ]); ?>
                     <div class="form-group">
                         <div class="col-lg-offset-1 col-lg-11" align="left">
-                            <?= Html::submitButton('Ответить', ['class' => 'btn btn-xs', 'name' => "answer-button-{${$item[1]}['id']}"]); ?>
+                            <?= Html::submitButton('Ответить', ['class' => 'btn btn-xs', 'name' => "answer-button-{$b['id']}"]); ?>
                         </div>
                     </div>
                     <?php ActiveForm::end(); ?>
                         <div class="clear cl4"></div>                        
                     </div></div></div></div></div></div>
         
-                        <?php if (isset($_POST["answer-button-{${$item[1]}['id']}"])): ?>        
+                        <?php if (isset($_POST["answer-button-{$b['id']}"])): ?>        
 
-                            <div align="center"><h5>Ответить пользователю <?= ${$item[1]}['author'] ?>:</h5></div>        
+                            <div align="center"><h5>Ответить пользователю <?= $b['author'] ?>:</h5></div>        
                             <?php
                             $form = ActiveForm::begin([
                                 'id' => 'comment-form',
@@ -144,12 +131,8 @@ use yii\widgets\Pjax;
                                 ],
                             ]);
                             ?>
-                            <?php //if(isset($_POST['comment-button'])): //перенёс в контроллер?> 
-                            <?php //$comment->author = '' ?>
-                            <?php //$comment->content = '' ?>
-                            <?php //endif; ?>
 
-                            <?php $comment->parent_id = ${$item[1]}['id'] ?>
+                            <?php $comment->parent_id = $b['id'] ?>
                             <?php $comment->level = 2 ?>
 
                             <?= $form->field($comment, 'author')->textInput() ?>
@@ -159,7 +142,7 @@ use yii\widgets\Pjax;
                             <div class="form-group">
                                 <div class="col-lg-offset-1 col-lg-11" align="center">
                                     <?= Html::submitButton('Отправить', ['class' => 'btn btn-warning', 'name' => 'comment-button']) ?>
-                                    <?= Html::Button('Отменить', ['class' => 'btn btn-default', 'name' => 'cancel-button']) ?>
+                                    <a href="<?= Url::to(['blog/post', 'id' => $post['id']]) ?>" class="btn">Отменить</a>
                                 </div>
                             </div>
 
@@ -177,16 +160,16 @@ use yii\widgets\Pjax;
                             <?php ActiveForm::end(); ?>
                         <?php endif; ?>
         
-                <?php foreach ($comments as $$item[2]): ?>
-                    <?php if(${$item[2]}['parent_id'] == ${$item[1]}['id'] && ${$item[2]}['level'] == 2): ?>
+                <?php foreach ($comments as $c): ?>
+                    <?php if($c['parent_id'] == $b['id'] && $c['level'] == 2): ?>
                         <div class="grid_8"><div class="grid_8"><div class="grid_8"><div class="grid_8"><div class="grid_8">
                         <div class="grid_8"><div class="grid_8"><div class="grid_8"><div class="grid_8"><div class="grid_8">
                         <div class="grid_8">
                         <img src="/images/no-image.jpg" alt="" class="img_inner fleft i1">
                             <div class="extra_wrapper">
-                                <h1><b><?= ${$item[2]}['author'] ?></b> <i>отвечает:</i></h1>
-                                <div class="col1"><u><?= ${$item[2]}['created_at'] ?></u></div></br>
-                                <?= ${$item[2]}['content'] ?></div>
+                                <h1><b><?= $c['author'] ?></b> <i>отвечает:</i></h1>
+                                <div class="col1"><u><?= $c['created_at'] ?></u></div></br>
+                                <?= $c['content'] ?></div>
                             <div class="clear cl4"></div>                            
                         </div></div></div></div></div></div></div></div></div></div></div>                        
                             
@@ -195,11 +178,9 @@ use yii\widgets\Pjax;
                 <?php endif; ?>
             <?php endforeach; ?>
             <?php endif;?>
-        <?php endforeach; ?>
-          
+        <?php endforeach; ?>        
         
-        
-        <?php if(!isset($_POST["answer-button-{${$item[0]}['id']}"]) || !isset($_POST["answer-button-{${$item[1]}['id']}"])): ?>
+        <?php if(!isset($_POST["answer-button-{$a['id']}"]) || !isset($_POST["answer-button-{$b['id']}"])): ?>
         <div align="center"><h5>Оставить комментарий:</h5></div>
         <?php 
             $form = ActiveForm::begin([
@@ -212,10 +193,6 @@ use yii\widgets\Pjax;
                 ],
             ]);
         ?>
-        <?php //if(isset($_POST['comment-button'])): ?>
-            <?php //$comment->author = '' ?>
-            <?php //$comment->content = '' ?>
-        <?php //endif; ?>
         
         <?php $comment->parent_id = 0 ?>
         <?php $comment->level = 0 ?>
@@ -243,7 +220,7 @@ use yii\widgets\Pjax;
 
         <?php ActiveForm::end(); ?>
         <?php endif; ?>    
-            <?php debug($_POST) ?>
+            <?php //debug($_POST) ?>
         <?php Pjax::end(); ?>
         
       </div>

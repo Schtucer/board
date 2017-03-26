@@ -163,7 +163,7 @@ a.btn:hover {
 
 .img_inner {
 	max-width: 100%;
-	 -moz-box-sizing: border-box;
+        -moz-box-sizing: border-box;
  -webkit-box-sizing: border-box;
  -o-box-sizing: border-box;
  box-sizing: border-box;
@@ -866,4 +866,32 @@ padding-bottom: 8px;
 
 #form1 a:hover {
 	opacity: 0.5;
+}
+
+#rating{
+width:85px;
+height: 25px;
+}
+#ratBlocks{
+width:87px;
+height: 25px;
+margin-top:-25px;
+display:none;
+}
+#ratZero{
+width:85px;
+background: url(../images/stars.png) repeat-x 0 0;
+height: 25px;
+}
+#ratDone{
+width:0;
+background: url(../images/stars.png) repeat-x 0 -50px;
+height: 25px;
+margin-top:-25px;
+}
+#ratHover{
+width:0px;
+background: url(../images/stars.png) repeat-x 0 -25px;
+height: 25px;
+margin-top:-25px;
 }

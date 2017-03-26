@@ -34,5 +34,25 @@ class Module extends \yii\base\Module
                 ],
             ],
         ];
-    }    
+    }
+
+    public function beforeAction($action)
+    {
+
+        if (!parent::beforeAction($action))
+        {
+            return false;
+        }
+
+        if (\Yii::$app->user->identity['username'] == 'admin' && \Yii::$app->user->identity['id'] == 1)
+        {
+            return true;
+        }
+        else
+        {
+            \Yii::$app->getResponse()->redirect(\Yii::$app->getHomeUrl());
+            //для перестраховки вернем false
+            return false;
+        }
+    }
 }

@@ -13,13 +13,13 @@ use yii\helpers\Html;
 class BlogController extends AppController {      
     
     public function actionIndex() {
-        $query = Post::find()->asArray();
+        $query = Post::find()->orderBy(['create_time' => SORT_DESC]);
         if(empty($query)) {
             throw new HttpException(404, 'Не найдено ни одной статьи!');
         }        
         $pages = new Pagination([
             'totalCount' => $query->count(),
-            'pageSize' => 2,
+            'pageSize' => 20,
             'forcePageParam' => false,
             'pageSizeParam' => false,
         ]);
@@ -80,8 +80,8 @@ class BlogController extends AppController {
             throw new HttpException(404, 'Такой категории не существует!');
         }
         $categories = Yii::$app->cache->get('categories');
-        $query = Post::find()->where(['category_id' => $id])->asArray();
-        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 2, 
+        $query = Post::find()->orderBy(['id' => SORT_DESC])->where(['category_id' => $id]);
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 4, 
             'forcePageParam' => false, 'pageSizeParam' => false]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
         if(empty($posts)) {
@@ -109,7 +109,7 @@ class BlogController extends AppController {
         }
         if(!$q)
             return $this->render('search', compact('categories'));
-        $query = Post::find()->where(['like', 'title', $q]);
+        $query = Post::find()->orderBy(['id' => SORT_DESC])->where(['like', 'title', $q]);
         $pages = new Pagination([
             'totalCount' => $query->count(),
             'pageSize' => 2,

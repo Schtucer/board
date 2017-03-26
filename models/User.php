@@ -3,20 +3,16 @@
 namespace app\models;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-//use yii\behaviors\TimestampBehavior;
 
 class User extends ActiveRecord implements IdentityInterface
 {
     public static function tableName() {
         return 'tbl_user';
-    }    
+    }
     
-//    public function behaviors() {
-//        return [
-//            TimestampBehavior::className(),
-//        ];
-//    }
-
+    public function getProfile() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
         /**
      * @inheritdoc
      */

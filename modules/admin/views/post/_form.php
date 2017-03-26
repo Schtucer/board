@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use app\models\Category;
 use mihaildev\ckeditor\CKEditor;
 use mihaildev\elfinder\ElFinder;
 mihaildev\elfinder\Assets::noConflict($this);
@@ -15,7 +17,7 @@ mihaildev\elfinder\Assets::noConflict($this);
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'category_id')->textInput() ?>
+    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name')) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -31,9 +33,7 @@ mihaildev\elfinder\Assets::noConflict($this);
     ]);
     ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?php //echo $form->field($model, 'create_time')->textInput() ?>
+    <?= $form->field($model, 'status')->textInput() ?>    
 
     <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
 
