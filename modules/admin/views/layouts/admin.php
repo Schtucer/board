@@ -58,10 +58,10 @@ ltAppAsset::register($this);
             <?php if(!\Yii::$app->user->isGuest): ?>
             <?php if(\Yii::$app->user->identity['username'] == 'admin' && \Yii::$app->user->identity['id'] == 1): ?>            
             <li><a href="<?= Url::to(['/profile/index']) ?>">Пользователи</a>
-            <li><a href="<?= Url::to(['/admin/post/index']) ?>">Статьи ˇ</a>
+            <li><a href="<?= Url::to(['/admin/post/index']) ?>">Объявления ˇ</a>
               <ul>
                 <li><a href="<?= Url::to('/admin/post/index') ?>">Просмотр всех</a></li>
-                <li><a href="<?= Url::to('/admin/post/create') ?>">Создать новую</a></li>
+                <li><a href="<?= Url::to('/admin/post/create') ?>">Создать новое</a></li>
               </ul>
             </li>
             <li><a href="<?= Url::to(['/admin/category/index']) ?>">Категории ˇ</a>

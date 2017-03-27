@@ -59,10 +59,10 @@ ltAppAsset::register($this);
             <li class="current"><a href="<?= Url::home() ?>">Главная</a></li>
             <?php if(!\Yii::$app->user->isGuest): ?>
                 <li>
-                    <a href="<?= Url::to(['/post/index']) ?>">Статьи ˇ</a>
+                    <a href="<?= Url::to(['/post/index']) ?>">Объявления ˇ</a>
                     <ul>
                       <li><a href="<?= Url::to('/post/index') ?>">Просмотр своих</a></li>
-                      <li><a href="<?= Url::to('/post/create') ?>">Создать новую</a></li>
+                      <li><a href="<?= Url::to('/post/create') ?>">Создать новое</a></li>
                     </ul>
                 </li>
             <?php if(\Yii::$app->user->identity['username'] == 'admin' && \Yii::$app->user->identity['id'] == 1): ?>
